@@ -24,6 +24,14 @@ app.use((req,res, next) => {
     res.setHeader('Content-Type', 'text/html');
     res.end('<html><body><h1>This is an Express Server</h1></body></html>');
 });
+const cors = require('cors')
+
+var corsOptions = {
+  origin: 'http://localhost:4200',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+}
+
+app.use(cors(corsOptions))
 
 const server = http.createServer(app);
 server.listen(port, hostname, ()=>{
