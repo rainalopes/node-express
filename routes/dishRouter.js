@@ -51,6 +51,7 @@ dishRouter.route('/')
    
 })
 .post((req,res,next)=>{
+  //insert statement
     res.end('Will add the dish: ' + req.body.name+ ' with details: '+ req.body.description);
 })
 .put((req,res,next)=>{
