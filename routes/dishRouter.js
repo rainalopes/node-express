@@ -5,11 +5,11 @@ const dishRouter = express.Router();
 var mysql = require('mysql');
 
 var con = mysql.createConnection({
-  host: "localhost",
+  host: "127.0.0.1",
   user: "root",
   password: "password",
-  database:"node",
-  port: "3800"
+  database:"node_test",
+  port: "3306"
 });
 
 con.connect(function(err) {
@@ -18,7 +18,7 @@ con.connect(function(err) {
 });
 
 dishRouter.use(bodyParser.json());
-
+//dishRouter.use(bodyParser.urlencoded({ extended: false }));
 dishRouter.route('/')
 .all((req,res,next)=>{
     res.statusCode=200;
@@ -51,8 +51,27 @@ dishRouter.route('/')
    
 })
 .post((req,res,next)=>{
-  //insert statement
-    res.end('Will add the dish: ' + req.body.name+ ' with details: '+ req.body.description);
+    con.query('insert into dishes (name, price) values("'+req.body.name+'",'+req.body.price+')',(err,rows,fields)=>{
+        if(!err){
+        console.log(rows);
+       // res.end(JSON.stringify(rows));
+        res.send({
+            'success':true,
+            'message':"dish added successfully",
+        });
+    }
+        //res.send(rows);
+       // console.log(rows);
+        else{
+        console.log(err);
+        res.send({
+            'success':false,
+            'message':"dish not added successfully",
+        });
+    }
+        
+    });
+  //  res.end('Will add the dish: ' + req.body.name+ ' with details: '+ req.body.price);
 })
 .put((req,res,next)=>{
     res.statusCode = 403;
